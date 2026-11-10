@@ -3,35 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TaskBot, Reward Mini App</title>
+    <title>Earn Points Mini App</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --bg-color: #0d1117;
-            --card-bg: #161b22;
-            --accent-color: #5865f2;
-            --accent-hover: #4752c4;
-            --text-primary: #f0f6fc;
-            --text-secondary: #8b949e;
-            --success-color: #2ea043;
-            --border-color: #30363d;
+            --bg-color: #080911;
+            --card-bg: rgba(18, 22, 38, 0.8);
+            --neon-green: #00ffcc;
+            --neon-pink: #ff007f;
+            --neon-purple: #9d4edf;
+            --text-main: #ffffff;
+            --text-sub: #8d96b0;
+            --border-glow: rgba(0, 255, 204, 0.3);
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Rajdhani', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
             background-color: var(--bg-color);
-            color: var(--text-primary);
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             min-height: 100vh;
@@ -46,165 +46,224 @@
             display: flex;
             flex-direction: column;
             position: relative;
-            padding-bottom: 75px;
+            padding-bottom: 85px;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         /* Top Header */
-        .top-bar {
-            background: rgba(22, 27, 34, 0.85);
+        .header {
+            padding: 20px;
+            text-align: center;
+            background: linear-gradient(180deg, rgba(15, 20, 35, 0.9) 0%, rgba(8, 9, 17, 0) 100%);
+            position: sticky;
+            top: 0;
+            z-index: 10;
             backdrop-filter: blur(10px);
-            padding: 16px 20px;
+        }
+
+        .header h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 20px;
+            color: var(--neon-green);
+            text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+            letter-spacing: 1px;
+        }
+
+        /* Balance Banner */
+        .balance-banner {
+            margin: 0 20px 15px 20px;
+            padding: 15px;
+            background: rgba(18, 22, 38, 0.9);
+            border: 1px solid var(--neon-green);
+            border-radius: 12px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 0 15px rgba(0, 255, 204, 0.15);
         }
 
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .avatar {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #7928ca, #ff0080);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 18px;
-            color: #fff;
-        }
-
-        .balance-badge {
-            background: rgba(46, 160, 67, 0.15);
-            border: 1px solid rgba(46, 160, 67, 0.3);
-            color: var(--success-color);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-weight: 600;
+        .balance-title {
             font-size: 14px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
+            color: var(--text-sub);
         }
 
-        /* Content Sections */
+        .balance-val {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--neon-green);
+        }
+
+        /* Sections */
         .section {
             display: none;
-            padding: 20px;
-            animation: fadeIn 0.25s ease-in-out;
+            padding: 0 20px 20px 20px;
         }
 
         .section.active {
             display: block;
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Cards & Buttons */
-        .card {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .card-title {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 8px;
-            color: var(--text-primary);
-        }
-
-        .card-desc {
-            font-size: 13px;
-            color: var(--text-secondary);
-            margin-bottom: 16px;
-            line-height: 1.5;
-        }
-
-        .btn {
-            width: 100%;
-            padding: 14px;
-            border: none;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
-            color: white;
-            font-size: 15px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
-        }
-
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* Leaderboard */
-        .leaderboard-list {
+        /* Video List (100 Cards) */
+        .video-list {
             display: flex;
             flex-direction: column;
+            gap: 15px;
+        }
+
+        .video-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 14px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .video-card:hover {
+            border-color: var(--neon-pink);
+        }
+
+        .video-info-box {
+            display: flex;
+            align-items: center;
             gap: 12px;
         }
 
-        .leaderboard-item {
+        .video-thumb {
+            width: 60px;
+            height: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--neon-purple), var(--neon-pink));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .video-details {
+            flex-grow: 1;
+        }
+
+        .video-title {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .video-points {
+            font-size: 13px;
+            color: var(--neon-green);
+            font-weight: 700;
+            margin-top: 2px;
+        }
+
+        .claim-btn {
+            width: 100%;
+            padding: 10px;
+            background: transparent;
+            border: 1px solid var(--neon-pink);
+            color: var(--neon-pink);
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.2);
+            transition: all 0.2s ease;
+        }
+
+        .claim-btn:active {
+            background: var(--neon-pink);
+            color: #fff;
+        }
+
+        /* Leaderboard UI */
+        .lb-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .lb-tab {
+            flex: 1;
+            padding: 10px;
+            text-align: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color, #222);
+            border-radius: 8px;
+            color: var(--text-sub);
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .lb-tab.active {
+            border-color: var(--neon-green);
+            color: var(--neon-green);
+            font-weight: 700;
+        }
+
+        .lb-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background-color: var(--card-bg);
-            padding: 14px 16px;
+            padding: 12px;
+            background: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 8px;
+        }
+
+        /* Withdraw UI */
+        .withdraw-card {
+            background: var(--card-bg);
+            border: 1px solid var(--neon-purple);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .method-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .method-box {
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
-            border: 1px solid var(--border-color);
+            cursor: pointer;
         }
 
-        .rank {
-            font-weight: 700;
-            width: 30px;
-            color: var(--accent-color);
+        .method-box.selected {
+            border-color: var(--neon-green);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
         }
 
-        /* Forms */
-        .form-group {
-            margin-bottom: 16px;
-        }
-
-        .form-label {
-            display: block;
-            font-size: 13px;
-            color: var(--text-secondary);
+        .method-box i {
+            font-size: 24px;
+            color: var(--neon-green);
             margin-bottom: 6px;
         }
 
-        .form-control {
+        .input-field {
             width: 100%;
-            padding: 12px 14px;
-            background-color: var(--bg-color);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 14px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--neon-green);
+            border-radius: 8px;
+            color: #fff;
             outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--accent-color);
+            margin-bottom: 15px;
         }
 
         /* Navigation Bar */
@@ -215,13 +274,13 @@
             transform: translateX(-50%);
             width: 100%;
             max-width: 480px;
-            background-color: rgba(22, 27, 34, 0.95);
-            backdrop-filter: blur(12px);
-            border-top: 1px solid var(--border-color);
+            background: rgba(8, 9, 17, 0.95);
+            border-top: 1px solid var(--border-glow);
+            backdrop-filter: blur(15px);
             display: flex;
             justify-content: space-around;
-            padding: 12px 0;
-            z-index: 1000;
+            padding: 10px 0;
+            z-index: 100;
         }
 
         .nav-item {
@@ -229,12 +288,10 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            color: var(--text-secondary);
-            text-decoration: none;
+            color: var(--text-sub);
             font-size: 11px;
             cursor: pointer;
             width: 20%;
-            transition: color 0.2s ease;
         }
 
         .nav-item i {
@@ -242,7 +299,8 @@
         }
 
         .nav-item.active {
-            color: var(--accent-color);
+            color: var(--neon-pink);
+            text-shadow: 0 0 8px rgba(255, 0, 127, 0.6);
         }
     </style>
 
@@ -252,128 +310,121 @@
 <body>
 
     <div class="app-container">
-        <!-- Top Bar -->
-        <div class="top-bar">
-            <div class="user-info">
-                <div class="avatar" id="userAvatar">U</div>
-                <div>
-                    <div style="font-size: 14px; font-weight: 600;" id="userNameDisplay">User</div>
-                    <div style="font-size: 11px; color: var(--text-secondary);">Welcome!</div>
-                </div>
+        <!-- Top Header -->
+        <div class="header">
+            <h1 id="headerTitle">Earn Points</h1>
+        </div>
+
+        <!-- Total Points Box -->
+        <div class="balance-banner">
+            <div>
+                <div class="balance-title">TOTAL POINTS</div>
+                <div class="balance-val" id="totalPoints">0</div>
             </div>
-            <div class="balance-badge">
-                <i class="fa-solid fa-coins"></i>
-                <span id="coinBalance">0</span> Coins
+            <div style="text-align: right;">
+                <div class="balance-title">REDEEMABLE</div>
+                <div style="font-weight: 700; color: #fff;" id="usdVal">$0.00</div>
             </div>
         </div>
 
-        <!-- HOME SECTION -->
+        <!-- HOME SECTION (100 Videos) -->
         <div id="homeSection" class="section active">
-            <div class="card">
-                <div class="card-title"><i class="fa-solid fa-play-circle" style="color: var(--accent-color);"></i> Watch & Earn</div>
-                <div class="card-desc">Watch the video completely to claim your reward points. Skipping midway will not credit points.</div>
-                <button class="btn" onclick="watchAd()">
-                    <i class="fa-solid fa-film"></i> Watch Ad
-                </button>
+            <div class="video-list" id="videoContainer">
+                <!-- Dynamically Generated 100 Video Cards -->
             </div>
         </div>
 
         <!-- LEADERBOARD SECTION -->
         <div id="leaderboardSection" class="section">
-            <h3 style="margin-bottom: 16px; font-size: 18px;">Top Earners</h3>
-            <div class="leaderboard-list">
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span class="rank">#1</span>
-                        <span>User_8921</span>
-                    </div>
-                    <span style="font-weight: 600; color: var(--success-color);">1,250 Coins</span>
+            <div class="lb-tabs">
+                <div class="lb-tab active">Video Views Leaderboard</div>
+                <div class="lb-tab">Referrals Leaderboard</div>
+            </div>
+            <div id="leaderboardList">
+                <div class="lb-item">
+                    <span>1st. amavatavan</span>
+                    <span style="color: var(--neon-green);">1,200 pts</span>
                 </div>
-                <div class="leaderboard-item">
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <span class="rank">#2</span>
-                        <span>User_3412</span>
-                    </div>
-                    <span style="font-weight: 600; color: var(--success-color);">980 Coins</span>
+                <div class="lb-item">
+                    <span>2nd. manhwangsila</span>
+                    <span style="color: var(--neon-green);">420 pts</span>
                 </div>
             </div>
         </div>
 
         <!-- WITHDRAW SECTION -->
         <div id="withdrawSection" class="section">
-            <div class="card">
-                <div class="card-title">Withdraw Funds</div>
-                <div class="form-group">
-                    <label class="form-label">Payment Method</label>
-                    <select class="form-control" id="withdrawMethod">
-                        <option value="bkash">bKash</option>
-                        <option value="nagad">Nagad</option>
-                        <option value="inr">Bank Transfer (INR)</option>
-                    </select>
+            <div class="withdraw-card">
+                <div style="font-size: 14px; color: var(--text-sub);">ENTER WITHDRAWAL DETAILS</div>
+                
+                <div class="method-grid">
+                    <div class="method-box selected" onclick="selectMethod('UPI', this)">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <div style="font-size: 12px;">UPI</div>
+                    </div>
+                    <div class="method-box" onclick="selectMethod('Bank', this)">
+                        <i class="fa-solid fa-building-columns"></i>
+                        <div style="font-size: 12px;">Bank Transfer</div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label class="form-label">Account Number / IFSC</label>
-                    <input type="text" class="form-control" id="accountNumber" placeholder="Enter your number or IFSC">
-                </div>
-                <button class="btn" onclick="requestWithdraw()">
-                    <i class="fa-solid fa-wallet"></i> Submit Request
-                </button>
+
+                <input type="text" class="input-field" placeholder="UPI ID or Account Number" id="payDetail">
+                <button class="claim-btn" style="background: var(--neon-pink); color: #fff;" onclick="processWithdraw()">Proceed to Withdraw</button>
             </div>
         </div>
 
         <!-- SETTINGS SECTION -->
         <div id="settingsSection" class="section">
-            <div class="card">
-                <div class="card-title">App Settings</div>
-                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
-                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
-                        <i class="fa-solid fa-globe"></i> Select Language
-                    </button>
-                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
-                        <i class="fa-solid fa-shield-halved"></i> Privacy Policy
-                    </button>
-                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
-                        <i class="fa-solid fa-headset"></i> Customer Service
-                    </button>
-                </div>
+            <div class="withdraw-card" style="text-align: left;">
+                <h3 style="margin-bottom: 15px; color: var(--neon-green);">Settings</h3>
+                <p style="color: var(--text-sub); font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-globe"></i> Language: English</p>
+                <p style="color: var(--text-sub); font-size: 14px; margin-bottom: 10px;"><i class="fa-solid fa-shield"></i> Privacy Policy</p>
+                <p style="color: var(--text-sub); font-size: 14px;"><i class="fa-solid fa-headset"></i> Support</p>
             </div>
         </div>
 
         <!-- PROFILE SECTION -->
         <div id="profileSection" class="section">
-            <div class="card" style="text-align: center;">
-                <div class="avatar" style="width: 70px; height: 70px; font-size: 28px; margin: 0 auto 12px auto;">U</div>
-                <h3 id="profileName">User Name</h3>
-                <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;">User ID: 5506655942</p>
+            <div class="withdraw-card">
+                <div style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid var(--neon-green); margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 30px;">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <h3>USER_NAME</h3>
+                <p style="color: var(--text-sub); font-size: 12px; margin-bottom: 15px;">+1 (555) 123-XXXX</p>
+                
+                <div style="display: flex; justify-content: space-between; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 10px; font-size: 13px;">
+                    <span>Videos Watched:</span>
+                    <span style="color: var(--neon-green);" id="watchedCount">0</span>
+                </div>
             </div>
         </div>
 
-        <!-- Bottom Navigation Bar -->
+        <!-- Navigation Bar -->
         <div class="navbar">
-            <div class="nav-item active" onclick="switchTab('homeSection', this)">
+            <div class="nav-item active" onclick="switchTab('homeSection', this, 'Earn Points')">
                 <i class="fa-solid fa-house"></i>
                 <span>Home</span>
             </div>
-            <div class="nav-item" onclick="switchTab('leaderboardSection', this)">
+            <div class="nav-item" onclick="switchTab('leaderboardSection', this, 'Leaderboard')">
                 <i class="fa-solid fa-trophy"></i>
                 <span>Leaderboard</span>
             </div>
-            <div class="nav-item" onclick="switchTab('withdrawSection', this)">
-                <i class="fa-solid fa-money-bill-transfer"></i>
+            <div class="nav-item" onclick="switchTab('withdrawSection', this, 'Withdraw')">
+                <i class="fa-solid fa-wallet"></i>
                 <span>Withdraw</span>
             </div>
-            <div class="nav-item" onclick="switchTab('settingsSection', this)">
+            <div class="nav-item" onclick="switchTab('settingsSection', this, 'Settings')">
                 <i class="fa-solid fa-gear"></i>
                 <span>Settings</span>
             </div>
-            <div class="nav-item" onclick="switchTab('profileSection', this)">
+            <div class="nav-item" onclick="switchTab('profileSection', this, 'Profile')">
                 <i class="fa-solid fa-user"></i>
                 <span>Profile</span>
             </div>
         </div>
     </div>
 
-    <!-- Firebase JS SDK -->
+    <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
@@ -392,36 +443,69 @@
         const analytics = getAnalytics(app);
     </script>
 
+    <!-- App Logic -->
     <script>
-        let coins = 0;
+        let points = 0;
+        let watched = 0;
 
-        function switchTab(sectionId, element) {
-            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
-            
-            document.getElementById(sectionId).classList.add('active');
-            element.classList.add('active');
+        // Generate 100 Video Options Dynamically
+        const videoContainer = document.getElementById('videoContainer');
+        for (let i = 1; i <= 100; i++) {
+            const card = document.createElement('div');
+            card.className = 'video-card';
+            card.innerHTML = `
+                <div class="video-info-box">
+                    <div class="video-thumb"><i class="fa-solid fa-play"></i></div>
+                    <div class="video-details">
+                        <div class="video-title">Video Option #${i}</div>
+                        <div class="video-points">+10 Points</div>
+                    </div>
+                </div>
+                <button class="claim-btn" onclick="triggerAd(${i})">CLAIM - 10 Points</button>
+            `;
+            videoContainer.appendChild(card);
         }
 
-        // Monetag Rewarded Ad Execution
-        function watchAd() {
+        // Tab Switching
+        function switchTab(secId, el, title) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(secId).classList.add('active');
+            el.classList.add('active');
+            document.getElementById('headerTitle').innerText = title;
+        }
+
+        // Trigger Monetag Rewarded Ad
+        function triggerAd(videoNum) {
             if (typeof show_12234206 === 'function') {
                 show_12234206().then(() => {
-                    coins += 10;
-                    document.getElementById('coinBalance').innerText = coins;
-                    alert('Congratulations! You earned 10 coins.');
-                }).catch((err) => {
-                    alert('Ad was closed early or failed to load. Please try again.');
+                    points += 10;
+                    watched += 1;
+                    updateUI();
+                    alert(`Success! 10 Points added for Video #${videoNum}`);
+                }).catch(() => {
+                    alert('Ad interaction was cancelled. Points were not added.');
                 });
             } else {
-                alert('Ad is loading. Please try again in a few seconds.');
+                alert('Ad SDK is loading or blocked by AdBlocker. Please check connection.');
             }
         }
 
-        function requestWithdraw() {
-            const accountNumber = document.getElementById('accountNumber').value;
-            if(!accountNumber) {
-                alert('Please enter your account number.');
+        function updateUI() {
+            document.getElementById('totalPoints').innerText = points;
+            document.getElementById('usdVal').innerText = `$${(points / 1000).toFixed(2)}`;
+            document.getElementById('watchedCount').innerText = watched;
+        }
+
+        function selectMethod(method, element) {
+            document.querySelectorAll('.method-box').forEach(m => m.classList.remove('selected'));
+            element.classList.add('selected');
+        }
+
+        function processWithdraw() {
+            const val = document.getElementById('payDetail').value;
+            if(!val) {
+                alert('Please enter your account details');
                 return;
             }
             alert('Withdrawal request submitted successfully!');
