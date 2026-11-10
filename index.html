@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="bn">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Task & Reward App</title>
+    <title>TaskBot, Reward Mini App</title>
     <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -11,14 +11,14 @@
     
     <style>
         :root {
-            --bg-color: #0f172a;
-            --card-bg: #1e293b;
-            --accent-color: #6366f1;
-            --accent-hover: #4f46e5;
-            --text-primary: #f8fafc;
-            --text-secondary: #94a3b8;
-            --success-color: #10b981;
-            --border-color: #334155;
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --accent-color: #5865f2;
+            --accent-hover: #4752c4;
+            --text-primary: #f0f6fc;
+            --text-secondary: #8b949e;
+            --success-color: #2ea043;
+            --border-color: #30363d;
         }
 
         * {
@@ -49,9 +49,9 @@
             padding-bottom: 75px;
         }
 
-        /* Top Bar */
+        /* Top Header */
         .top-bar {
-            background: rgba(30, 41, 59, 0.8);
+            background: rgba(22, 27, 34, 0.85);
             backdrop-filter: blur(10px);
             padding: 16px 20px;
             display: flex;
@@ -70,21 +70,21 @@
         }
 
         .avatar {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #6366f1, #a855f7);
+            background: linear-gradient(135deg, #7928ca, #ff0080);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 700;
             font-size: 18px;
             color: #fff;
         }
 
         .balance-badge {
-            background: rgba(16, 185, 129, 0.15);
-            border: 1px solid rgba(16, 185, 129, 0.3);
+            background: rgba(46, 160, 67, 0.15);
+            border: 1px solid rgba(46, 160, 67, 0.3);
             color: var(--success-color);
             padding: 6px 14px;
             border-radius: 20px;
@@ -99,7 +99,7 @@
         .section {
             display: none;
             padding: 20px;
-            animation: fadeIn 0.3s ease-in-out;
+            animation: fadeIn 0.25s ease-in-out;
         }
 
         .section.active {
@@ -107,18 +107,18 @@
         }
 
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
+            from { opacity: 0; transform: translateY(6px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Cards */
+        /* Cards & Buttons */
         .card {
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 20px;
             margin-bottom: 16px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
         }
 
         .card-title {
@@ -132,6 +132,7 @@
             font-size: 13px;
             color: var(--text-secondary);
             margin-bottom: 16px;
+            line-height: 1.5;
         }
 
         .btn {
@@ -149,7 +150,7 @@
             justify-content: center;
             gap: 8px;
             transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+            box-shadow: 0 4px 12px rgba(88, 101, 242, 0.3);
         }
 
         .btn:active {
@@ -160,7 +161,7 @@
         .leaderboard-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
         }
 
         .leaderboard-item {
@@ -168,18 +169,18 @@
             align-items: center;
             justify-content: space-between;
             background-color: var(--card-bg);
-            padding: 12px 16px;
+            padding: 14px 16px;
             border-radius: 12px;
             border: 1px solid var(--border-color);
         }
 
         .rank {
             font-weight: 700;
-            width: 28px;
+            width: 30px;
             color: var(--accent-color);
         }
 
-        /* Withdraw Form */
+        /* Forms */
         .form-group {
             margin-bottom: 16px;
         }
@@ -206,7 +207,7 @@
             border-color: var(--accent-color);
         }
 
-        /* Bottom Navigation Bar */
+        /* Navigation Bar */
         .navbar {
             position: fixed;
             bottom: 0;
@@ -214,12 +215,12 @@
             transform: translateX(-50%);
             width: 100%;
             max-width: 480px;
-            background-color: rgba(30, 41, 59, 0.95);
+            background-color: rgba(22, 27, 34, 0.95);
             backdrop-filter: blur(12px);
             border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 12px 0;
             z-index: 1000;
         }
 
@@ -256,30 +257,30 @@
             <div class="user-info">
                 <div class="avatar" id="userAvatar">U</div>
                 <div>
-                    <div style="font-size: 14px; font-weight: 600;" id="userNameDisplay">ইউজার</div>
-                    <div style="font-size: 11px; color: var(--text-secondary);">স্বাগতম!</div>
+                    <div style="font-size: 14px; font-weight: 600;" id="userNameDisplay">User</div>
+                    <div style="font-size: 11px; color: var(--text-secondary);">Welcome!</div>
                 </div>
             </div>
             <div class="balance-badge">
                 <i class="fa-solid fa-coins"></i>
-                <span id="coinBalance">0</span> কয়েন
+                <span id="coinBalance">0</span> Coins
             </div>
         </div>
 
         <!-- HOME SECTION -->
         <div id="homeSection" class="section active">
             <div class="card">
-                <div class="card-title"><i class="fa-solid fa-play-circle" style="color: #6366f1;"></i> ভিডিও দেখে আয় করুন</div>
-                <div class="card-desc">বিজ্ঞাপনটি সম্পূর্ণ দেখুন এবং রিওয়ার্ড পয়েন্ট অর্জন করুন। মাঝপথে কেটে দিলে পয়েন্ট যোগ হবে না।</div>
+                <div class="card-title"><i class="fa-solid fa-play-circle" style="color: var(--accent-color);"></i> Watch & Earn</div>
+                <div class="card-desc">Watch the video completely to claim your reward points. Skipping midway will not credit points.</div>
                 <button class="btn" onclick="watchAd()">
-                    <i class="fa-solid fa-film"></i> ওয়াচ এড (Watch Ad)
+                    <i class="fa-solid fa-film"></i> Watch Ad
                 </button>
             </div>
         </div>
 
         <!-- LEADERBOARD SECTION -->
         <div id="leaderboardSection" class="section">
-            <h3 style="margin-bottom: 16px; font-size: 18px;">সেরা পয়েন্ট অর্জনকারী</h3>
+            <h3 style="margin-bottom: 16px; font-size: 18px;">Top Earners</h3>
             <div class="leaderboard-list">
                 <div class="leaderboard-item">
                     <div style="display: flex; align-items: center; gap: 10px;">
@@ -301,21 +302,21 @@
         <!-- WITHDRAW SECTION -->
         <div id="withdrawSection" class="section">
             <div class="card">
-                <div class="card-title">টাকা তুলুন</div>
+                <div class="card-title">Withdraw Funds</div>
                 <div class="form-group">
-                    <label class="form-label">পেমেন্ট মেথড</label>
+                    <label class="form-label">Payment Method</label>
                     <select class="form-control" id="withdrawMethod">
-                        <option value="bkash">বিকাশ (bKash)</option>
-                        <option value="nagad">নগদ (Nagad)</option>
-                        <option value="inr">ব্যাংক ট্রান্সফার (INR)</option>
+                        <option value="bkash">bKash</option>
+                        <option value="nagad">Nagad</option>
+                        <option value="inr">Bank Transfer (INR)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label class="form-label">একাউন্ট নম্বর / IFSC</label>
-                    <input type="text" class="form-control" placeholder="আপনার নম্বর লিখুন">
+                    <label class="form-label">Account Number / IFSC</label>
+                    <input type="text" class="form-control" id="accountNumber" placeholder="Enter your number or IFSC">
                 </div>
-                <button class="btn">
-                    <i class="fa-solid fa-wallet"></i> উইথড্র রিকোয়েস্ট দিন
+                <button class="btn" onclick="requestWithdraw()">
+                    <i class="fa-solid fa-wallet"></i> Submit Request
                 </button>
             </div>
         </div>
@@ -323,16 +324,16 @@
         <!-- SETTINGS SECTION -->
         <div id="settingsSection" class="section">
             <div class="card">
-                <div class="card-title">অ্যাপ সেটিংস</div>
+                <div class="card-title">App Settings</div>
                 <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
                     <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
-                        <i class="fa-solid fa-globe"></i> ভাষা নির্বাচন (Language)
+                        <i class="fa-solid fa-globe"></i> Select Language
                     </button>
                     <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
-                        <i class="fa-solid fa-shield-halved"></i> প্রাইভেসি পলিসি
+                        <i class="fa-solid fa-shield-halved"></i> Privacy Policy
                     </button>
                     <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
-                        <i class="fa-solid fa-headset"></i> কাস্টমার সার্ভিস
+                        <i class="fa-solid fa-headset"></i> Customer Service
                     </button>
                 </div>
             </div>
@@ -342,7 +343,7 @@
         <div id="profileSection" class="section">
             <div class="card" style="text-align: center;">
                 <div class="avatar" style="width: 70px; height: 70px; font-size: 28px; margin: 0 auto 12px auto;">U</div>
-                <h3 id="profileName">ইউজার নেম</h3>
+                <h3 id="profileName">User Name</h3>
                 <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;">User ID: 5506655942</p>
             </div>
         </div>
@@ -351,33 +352,32 @@
         <div class="navbar">
             <div class="nav-item active" onclick="switchTab('homeSection', this)">
                 <i class="fa-solid fa-house"></i>
-                <span>হোম</span>
+                <span>Home</span>
             </div>
             <div class="nav-item" onclick="switchTab('leaderboardSection', this)">
                 <i class="fa-solid fa-trophy"></i>
-                <span>লিডারবোর্ড</span>
+                <span>Leaderboard</span>
             </div>
             <div class="nav-item" onclick="switchTab('withdrawSection', this)">
                 <i class="fa-solid fa-money-bill-transfer"></i>
-                <span>উইথড্র</span>
+                <span>Withdraw</span>
             </div>
             <div class="nav-item" onclick="switchTab('settingsSection', this)">
                 <i class="fa-solid fa-gear"></i>
-                <span>সেটিংস</span>
+                <span>Settings</span>
             </div>
             <div class="nav-item" onclick="switchTab('profileSection', this)">
                 <i class="fa-solid fa-user"></i>
-                <span>প্রোফাইল</span>
+                <span>Profile</span>
             </div>
         </div>
     </div>
 
-    <!-- Firebase JS SDK setup -->
+    <!-- Firebase JS SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
 
-        // Your web app's Firebase configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDa77K5bXMzjLz3YFQ3AxAQWiI_2Od67pY",
             authDomain: "project-a81348b2-1e4d-4eb4-a6e.firebaseapp.com",
@@ -388,7 +388,6 @@
             measurementId: "G-9SPK7JWJZC"
         };
 
-        // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const analytics = getAnalytics(app);
     </script>
@@ -396,7 +395,6 @@
     <script>
         let coins = 0;
 
-        // Navigation Switcher Logic
         function switchTab(sectionId, element) {
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
@@ -405,20 +403,28 @@
             element.classList.add('active');
         }
 
-        // Monetag Rewarded Ad Logic
+        // Monetag Rewarded Ad Execution
         function watchAd() {
             if (typeof show_12234206 === 'function') {
                 show_12234206().then(() => {
-                    // Reward user after watching ad
                     coins += 10;
                     document.getElementById('coinBalance').innerText = coins;
-                    alert('অভিনন্দন! আপনি ১০ কয়েন রিওয়ার্ড পেয়েছেন।');
+                    alert('Congratulations! You earned 10 coins.');
                 }).catch((err) => {
-                    alert('বিজ্ঞাপনটি সম্পূর্ণ দেখানো সম্ভব হয়নি। আবার চেষ্টা করুন।');
+                    alert('Ad was closed early or failed to load. Please try again.');
                 });
             } else {
-                alert('বিজ্ঞাপন লোড হচ্ছে, অনুগ্রহ করে কিছুক্ষণ পর চেষ্টা করুন।');
+                alert('Ad is loading. Please try again in a few seconds.');
             }
+        }
+
+        function requestWithdraw() {
+            const accountNumber = document.getElementById('accountNumber').value;
+            if(!accountNumber) {
+                alert('Please enter your account number.');
+                return;
+            }
+            alert('Withdrawal request submitted successfully!');
         }
     </script>
 </body>
