@@ -1,538 +1,424 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quick Watch & Earn</title>
+    <title>Task & Reward App</title>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
     <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #6366f1;
+            --accent-hover: #4f46e5;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --success-color: #10b981;
+            --border-color: #334155;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: #0d0f12;
-            color: #ffffff;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            display: flex;
+            justify-content: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 480px;
+            background-color: var(--bg-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
             padding-bottom: 75px;
         }
 
-        /* Top Header */
-        .app-header {
-            background-color: #12161f;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 1px solid #1e242d;
+        /* Top Bar */
+        .top-bar {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid var(--border-color);
         }
 
-        .app-header h1 {
-            color: #00ffcc;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
-
-        .container {
-            padding: 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* Stats & Balance Dashboard */
-        .balance-card {
-            background: linear-gradient(135deg, #161b22, #1f2633);
-            border: 1px solid #00ffcc;
-            border-radius: 12px;
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0, 255, 204, 0.1);
-        }
-
-        .stat-box {
-            text-align: center;
-        }
-
-        .stat-label {
-            font-size: 0.75rem;
-            color: #8a99ad;
-            text-transform: uppercase;
-        }
-
-        .stat-val {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #00ffcc;
-            margin-top: 4px;
-        }
-
-        .stat-val.gold {
-            color: #ffcc00;
-        }
-
-        /* Views Layout */
-        .view-section {
-            display: none;
-        }
-
-        .view-section.active {
-            display: block;
-        }
-
-        .section-title {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            padding-left: 10px;
-            border-left: 4px solid #00ffcc;
-            color: #ffffff;
-        }
-
-        /* Video Item List */
-        .video-item {
-            background-color: #161b22;
-            border: 1px solid #212835;
-            border-radius: 10px;
-            padding: 12px 15px;
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .video-left {
+        .user-info {
             display: flex;
             align-items: center;
             gap: 12px;
         }
 
-        .play-icon {
-            width: 38px;
-            height: 38px;
-            background: rgba(0, 255, 204, 0.1);
-            color: #00ffcc;
-            border-radius: 8px;
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1, #a855f7);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.9rem;
             font-weight: bold;
+            font-size: 18px;
+            color: #fff;
         }
 
-        .video-details h4 {
-            font-size: 0.95rem;
-            color: #ffffff;
-        }
-
-        .video-details p {
-            font-size: 0.8rem;
-            color: #ffcc00;
-            margin-top: 2px;
-        }
-
-        .claim-btn {
-            background: linear-gradient(90deg, #00ffcc, #00b894);
-            color: #000000;
-            border: none;
-            padding: 8px 18px;
+        .balance-badge {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            color: var(--success-color);
+            padding: 6px 14px;
             border-radius: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 0.85rem;
-            transition: all 0.2s ease;
-        }
-
-        .claim-btn:disabled {
-            background: #2a3442;
-            color: #6c7a89;
-            cursor: not-allowed;
-        }
-
-        /* Leaderboard Dual Tabs */
-        .tab-buttons {
+            font-weight: 600;
+            font-size: 14px;
             display: flex;
-            background: #161b22;
-            border-radius: 8px;
-            padding: 4px;
-            margin-bottom: 15px;
-            border: 1px solid #212835;
+            align-items: center;
+            gap: 6px;
         }
 
-        .tab-btn {
-            flex: 1;
-            padding: 10px;
-            background: none;
-            border: none;
-            color: #8a99ad;
-            font-weight: bold;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.85rem;
+        /* Content Sections */
+        .section {
+            display: none;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-in-out;
         }
 
-        .tab-btn.active {
-            background: #00ffcc;
-            color: #000000;
-        }
-
-        .leaderboard-list {
-            background: #161b22;
-            border-radius: 10px;
-            padding: 10px;
-            border: 1px solid #212835;
-        }
-
-        .rank-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 10px;
-            border-bottom: 1px solid #212835;
-            font-size: 0.9rem;
-        }
-
-        .rank-item:last-child {
-            border-bottom: none;
-        }
-
-        /* Withdrawal Form Styles */
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        .form-group label {
+        .section.active {
             display: block;
-            font-size: 0.85rem;
-            color: #8a99ad;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Cards */
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .card-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Leaderboard */
+        .leaderboard-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        .rank {
+            font-weight: 700;
+            width: 28px;
+            color: var(--accent-color);
+        }
+
+        /* Withdraw Form */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-secondary);
             margin-bottom: 6px;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px;
-            background: #161b22;
-            border: 1px solid #212835;
-            border-radius: 8px;
-            color: #ffffff;
+            padding: 12px 14px;
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 14px;
             outline: none;
-            font-size: 0.9rem;
         }
 
         .form-control:focus {
-            border-color: #00ffcc;
+            border-color: var(--accent-color);
         }
 
-        .submit-btn {
-            width: 100%;
-            padding: 12px;
-            background: linear-gradient(90deg, #00ffcc, #00b894);
-            color: #000000;
-            font-weight: bold;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-
-        /* Settings and Profile Items */
-        .menu-item {
-            background: #161b22;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border: 1px solid #212835;
-            font-size: 0.9rem;
-        }
-
-        /* Bottom Fixed Navigation Bar */
-        .bottom-nav {
+        /* Bottom Navigation Bar */
+        .navbar {
             position: fixed;
             bottom: 0;
-            left: 0;
+            left: 50%;
+            transform: translateX(-50%);
             width: 100%;
-            background: #12161f;
-            border-top: 1px solid #1e242d;
+            max-width: 480px;
+            background-color: rgba(30, 41, 59, 0.95);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid var(--border-color);
             display: flex;
             justify-content: space-around;
             padding: 10px 0;
             z-index: 1000;
         }
 
-        .nav-link {
-            background: none;
-            border: none;
-            color: #7a8b9e;
+        .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
-            font-size: 0.75rem;
-            cursor: pointer;
             gap: 4px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 11px;
+            cursor: pointer;
             width: 20%;
+            transition: color 0.2s ease;
         }
 
-        .nav-link.active {
-            color: #00ffcc;
-            font-weight: bold;
+        .nav-item i {
+            font-size: 18px;
         }
 
-        .nav-icon {
-            font-size: 1.2rem;
+        .nav-item.active {
+            color: var(--accent-color);
         }
     </style>
+
+    <!-- Monetag Rewarded Interstitial SDK -->
+    <script src='//ksy63.com/sdk.js' data-zone='12234206' data-sdk='show_12234206'></script>
 </head>
 <body>
 
-    <!-- App Header -->
-    <div class="app-header">
-        <h1>Quick Watch & Earn</h1>
-    </div>
-
-    <div class="container">
-        <!-- Balance Dashboard -->
-        <div class="balance-card">
-            <div class="stat-box">
-                <div class="stat-label">Total Points</div>
-                <div class="stat-val gold" id="userPoints">0 🪙</div>
+    <div class="app-container">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="user-info">
+                <div class="avatar" id="userAvatar">U</div>
+                <div>
+                    <div style="font-size: 14px; font-weight: 600;" id="userNameDisplay">ইউজার</div>
+                    <div style="font-size: 11px; color: var(--text-secondary);">স্বাগতম!</div>
+                </div>
             </div>
-            <div class="stat-box">
-                <div class="stat-label">Tasks Done</div>
-                <div class="stat-val" id="tasksDone">0 / 100</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Est. Value</div>
-                <div class="stat-val" id="estValue">₹ 0.00</div>
+            <div class="balance-badge">
+                <i class="fa-solid fa-coins"></i>
+                <span id="coinBalance">0</span> কয়েন
             </div>
         </div>
 
-        <!-- 1. HOME VIEW SECTION -->
-        <div id="homeView" class="view-section active">
-            <h3 class="section-title">Daily 100 Video Tasks</h3>
-            <div id="videoListContainer">
-                <!-- 100 items populated via JavaScript -->
+        <!-- HOME SECTION -->
+        <div id="homeSection" class="section active">
+            <div class="card">
+                <div class="card-title"><i class="fa-solid fa-play-circle" style="color: #6366f1;"></i> ভিডিও দেখে আয় করুন</div>
+                <div class="card-desc">বিজ্ঞাপনটি সম্পূর্ণ দেখুন এবং রিওয়ার্ড পয়েন্ট অর্জন করুন। মাঝপথে কেটে দিলে পয়েন্ট যোগ হবে না।</div>
+                <button class="btn" onclick="watchAd()">
+                    <i class="fa-solid fa-film"></i> ওয়াচ এড (Watch Ad)
+                </button>
             </div>
         </div>
 
-        <!-- 2. LEADERBOARD VIEW SECTION -->
-        <div id="leaderboardView" class="view-section">
-            <h3 class="section-title">Leaderboard</h3>
-            <div class="tab-buttons">
-                <button class="tab-btn active" id="tabVideoViews" onclick="switchTab('views')">Video Views</button>
-                <button class="tab-btn" id="tabReferrals" onclick="switchTab('referrals')">Referrals</button>
-            </div>
-            <div class="leaderboard-list" id="leaderboardList">
-                <!-- Content injected dynamically -->
+        <!-- LEADERBOARD SECTION -->
+        <div id="leaderboardSection" class="section">
+            <h3 style="margin-bottom: 16px; font-size: 18px;">সেরা পয়েন্ট অর্জনকারী</h3>
+            <div class="leaderboard-list">
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="rank">#1</span>
+                        <span>User_8921</span>
+                    </div>
+                    <span style="font-weight: 600; color: var(--success-color);">1,250 Coins</span>
+                </div>
+                <div class="leaderboard-item">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <span class="rank">#2</span>
+                        <span>User_3412</span>
+                    </div>
+                    <span style="font-weight: 600; color: var(--success-color);">980 Coins</span>
+                </div>
             </div>
         </div>
 
-        <!-- 3. WITHDRAW VIEW SECTION -->
-        <div id="withdrawView" class="view-section">
-            <h3 class="section-title">Withdraw Points</h3>
-            <form onsubmit="handleWithdraw(event)">
+        <!-- WITHDRAW SECTION -->
+        <div id="withdrawSection" class="section">
+            <div class="card">
+                <div class="card-title">টাকা তুলুন</div>
                 <div class="form-group">
-                    <label>Select Payment Method</label>
+                    <label class="form-label">পেমেন্ট মেথড</label>
                     <select class="form-control" id="withdrawMethod">
-                        <option value="UPI">UPI (Google Pay / PhonePe / Paytm)</option>
-                        <option value="bKash">bKash</option>
-                        <option value="Nagad">Nagad</option>
-                        <option value="Bank">Bank Account Transfer</option>
+                        <option value="bkash">বিকাশ (bKash)</option>
+                        <option value="nagad">নগদ (Nagad)</option>
+                        <option value="inr">ব্যাংক ট্রান্সফার (INR)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label>Points Amount</label>
-                    <input type="number" class="form-control" placeholder="Minimum 1000 Points" required id="withdrawAmount">
+                    <label class="form-label">একাউন্ট নম্বর / IFSC</label>
+                    <input type="text" class="form-control" placeholder="আপনার নম্বর লিখুন">
                 </div>
-                <div class="form-group">
-                    <label>Account Number / UPI ID / Mobile Number</label>
-                    <input type="text" class="form-control" placeholder="Enter details here" required id="withdrawAccount">
-                </div>
-                <button type="submit" class="submit-btn">Submit Request</button>
-            </form>
-        </div>
-
-        <!-- 4. SETTINGS VIEW SECTION -->
-        <div id="settingsView" class="view-section">
-            <h3 class="section-title">Settings</h3>
-            <div class="menu-item">
-                <span>App Language</span>
-                <select class="form-control" style="width: 110px; padding: 5px;">
-                    <option>English</option>
-                    <option>Bengali</option>
-                    <option>Hindi</option>
-                </select>
-            </div>
-            <div class="menu-item">
-                <span>Account Settings</span>
-                <span>➔</span>
-            </div>
-            <div class="menu-item">
-                <span>Privacy Policy</span>
-                <span>➔</span>
-            </div>
-            <div class="menu-item">
-                <span>Theme & Service</span>
-                <span>Dark Neon</span>
-            </div>
-            <div class="menu-item">
-                <span>Customer Service</span>
-                <span>➔</span>
+                <button class="btn">
+                    <i class="fa-solid fa-wallet"></i> উইথড্র রিকোয়েস্ট দিন
+                </button>
             </div>
         </div>
 
-        <!-- 5. PROFILE VIEW SECTION -->
-        <div id="profileView" class="view-section">
-            <h3 class="section-title">Profile</h3>
-            <div class="menu-item">
-                <span>User Name</span>
-                <span id="profileName">User_Account</span>
+        <!-- SETTINGS SECTION -->
+        <div id="settingsSection" class="section">
+            <div class="card">
+                <div class="card-title">অ্যাপ সেটিংস</div>
+                <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
+                        <i class="fa-solid fa-globe"></i> ভাষা নির্বাচন (Language)
+                    </button>
+                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
+                        <i class="fa-solid fa-shield-halved"></i> প্রাইভেসি পলিসি
+                    </button>
+                    <button class="btn" style="background: var(--card-bg); border: 1px solid var(--border-color); justify-content: flex-start;">
+                        <i class="fa-solid fa-headset"></i> কাস্টমার সার্ভিস
+                    </button>
+                </div>
             </div>
-            <div class="menu-item">
-                <span>Edit Profile</span>
-                <span>➔</span>
+        </div>
+
+        <!-- PROFILE SECTION -->
+        <div id="profileSection" class="section">
+            <div class="card" style="text-align: center;">
+                <div class="avatar" style="width: 70px; height: 70px; font-size: 28px; margin: 0 auto 12px auto;">U</div>
+                <h3 id="profileName">ইউজার নেম</h3>
+                <p style="color: var(--text-secondary); font-size: 13px; margin-top: 4px;">User ID: 5506655942</p>
             </div>
-            <div class="menu-item">
-                <span>Completed Tasks</span>
-                <span id="profileTasks">0</span>
+        </div>
+
+        <!-- Bottom Navigation Bar -->
+        <div class="navbar">
+            <div class="nav-item active" onclick="switchTab('homeSection', this)">
+                <i class="fa-solid fa-house"></i>
+                <span>হোম</span>
             </div>
-            <div class="menu-item" style="color: #ff4d4d; font-weight: bold; cursor: pointer;">
-                <span>Log Out</span>
-                <span>➔</span>
+            <div class="nav-item" onclick="switchTab('leaderboardSection', this)">
+                <i class="fa-solid fa-trophy"></i>
+                <span>লিডারবোর্ড</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('withdrawSection', this)">
+                <i class="fa-solid fa-money-bill-transfer"></i>
+                <span>উইথড্র</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('settingsSection', this)">
+                <i class="fa-solid fa-gear"></i>
+                <span>সেটিংস</span>
+            </div>
+            <div class="nav-item" onclick="switchTab('profileSection', this)">
+                <i class="fa-solid fa-user"></i>
+                <span>প্রোফাইল</span>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Navigation Bar -->
-    <div class="bottom-nav">
-        <button class="nav-link active" onclick="navigate('homeView', this)">
-            <span class="nav-icon">🏠</span>
-            <span>Home</span>
-        </button>
-        <button class="nav-link" onclick="navigate('leaderboardView', this)">
-            <span class="nav-icon">🏆</span>
-            <span>Leaderboard</span>
-        </button>
-        <button class="nav-link" onclick="navigate('withdrawView', this)">
-            <span class="nav-icon">💳</span>
-            <span>Withdraw</span>
-        </button>
-        <button class="nav-link" onclick="navigate('settingsView', this)">
-            <span class="nav-icon">⚙️</span>
-            <span>Settings</span>
-        </button>
-        <button class="nav-link" onclick="navigate('profileView', this)">
-            <span class="nav-icon">👤</span>
-            <span>Profile</span>
-        </button>
-    </div>
+    <!-- Firebase JS SDK setup -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDa77K5bXMzjLz3YFQ3AxAQWiI_2Od67pY",
+            authDomain: "project-a81348b2-1e4d-4eb4-a6e.firebaseapp.com",
+            projectId: "project-a81348b2-1e4d-4eb4-a6e",
+            storageBucket: "project-a81348b2-1e4d-4eb4-a6e.firebasestorage.app",
+            messagingSenderId: "778053852356",
+            appId: "1:778053852356:web:abc19f7a4c1351e9acbd91",
+            measurementId: "G-9SPK7JWJZC"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const analytics = getAnalytics(app);
+    </script>
 
     <script>
-        // Backend API Token Integration Placeholder
-        const API_TOKEN = "YOUR_PROVIDED_API_TOKEN";
+        let coins = 0;
 
-        let totalPoints = 0;
-        let completedCount = 0;
-
-        // Populate 100 Video Tasks dynamically
-        const videoContainer = document.getElementById("videoListContainer");
-        for (let i = 1; i <= 100; i++) {
-            const padId = String(i).padStart(3, '0');
-            const videoCard = document.createElement("div");
-            videoCard.className = "video-item";
-            videoCard.innerHTML = `
-                <div class="video-left">
-                    <div class="play-icon">▶</div>
-                    <div class="video-details">
-                        <h4>Video Task #${padId}</h4>
-                        <p>+10 Points • 30 Sec</p>
-                    </div>
-                </div>
-                <button class="claim-btn" id="btn-${i}" onclick="watchVideo(${i})">CLAIM</button>
-            `;
-            videoContainer.appendChild(videoCard);
+        // Navigation Switcher Logic
+        function switchTab(sectionId, element) {
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            
+            document.getElementById(sectionId).classList.add('active');
+            element.classList.add('active');
         }
 
-        // Watch Video Logic (+10 Points reward)
-        function watchVideo(id) {
-            const btn = document.getElementById(`btn-${id}`);
-            btn.innerText = "Watching...";
-            btn.disabled = true;
-
-            // Simulating video watch delay
-            setTimeout(() => {
-                totalPoints += 10;
-                completedCount += 1;
-                
-                btn.innerText = "DONE";
-                btn.style.background = "#2a3442";
-                btn.style.color = "#6c7a89";
-
-                updateUI();
-            }, 1000);
-        }
-
-        // UI Dashboard Updates
-        function updateUI() {
-            document.getElementById("userPoints").innerText = `${totalPoints} 🪙`;
-            document.getElementById("tasksDone").innerText = `${completedCount} / 100`;
-            document.getElementById("estValue").innerText = `₹ ${(totalPoints * 0.01).toFixed(2)}`;
-            document.getElementById("profileTasks").innerText = completedCount;
-        }
-
-        // Bottom Navigation Handler
-        function navigate(viewId, element) {
-            document.querySelectorAll(".view-section").forEach(el => el.classList.remove("active"));
-            document.querySelectorAll(".nav-link").forEach(el => el.classList.remove("active"));
-
-            document.getElementById(viewId).classList.add("active");
-            element.classList.add("active");
-        }
-
-        // Leaderboard Dual-Tab Handler
-        function switchTab(tabType) {
-            const tabViews = document.getElementById("tabVideoViews");
-            const tabRefs = document.getElementById("tabReferrals");
-            const lbList = document.getElementById("leaderboardList");
-
-            if (tabType === 'views') {
-                tabViews.classList.add("active");
-                tabRefs.classList.remove("active");
-                lbList.innerHTML = `
-                    <div class="rank-item"><span>1. User_998</span><span>1250 Points</span></div>
-                    <div class="rank-item"><span>2. User_431</span><span>1000 Points</span></div>
-                    <div class="rank-item"><span>3. User_102</span><span>850 Points</span></div>
-                    <div class="rank-item"><span>4. User_554</span><span>720 Points</span></div>
-                `;
+        // Monetag Rewarded Ad Logic
+        function watchAd() {
+            if (typeof show_12234206 === 'function') {
+                show_12234206().then(() => {
+                    // Reward user after watching ad
+                    coins += 10;
+                    document.getElementById('coinBalance').innerText = coins;
+                    alert('অভিনন্দন! আপনি ১০ কয়েন রিওয়ার্ড পেয়েছেন।');
+                }).catch((err) => {
+                    alert('বিজ্ঞাপনটি সম্পূর্ণ দেখানো সম্ভব হয়নি। আবার চেষ্টা করুন।');
+                });
             } else {
-                tabRefs.classList.add("active");
-                tabViews.classList.remove("active");
-                lbList.innerHTML = `
-                    <div class="rank-item"><span>1. Rahul_K</span><span>45 Referrals</span></div>
-                    <div class="rank-item"><span>2. Samim_A</span><span>38 Referrals</span></div>
-                    <div class="rank-item"><span>3. Bikram_S</span><span>30 Referrals</span></div>
-                    <div class="rank-item"><span>4. Alex_M</span><span>22 Referrals</span></div>
-                `;
+                alert('বিজ্ঞাপন লোড হচ্ছে, অনুগ্রহ করে কিছুক্ষণ পর চেষ্টা করুন।');
             }
-        }
-        switchTab('views'); // Default tab on load
-
-        // Handle Withdrawal Submit
-        function handleWithdraw(event) {
-            event.preventDefault();
-            const amount = parseInt(document.getElementById("withdrawAmount").value);
-            if (amount > totalPoints) {
-                alert("Insufficient points in your account!");
-                return;
-            }
-            alert("Withdrawal request submitted successfully!");
         }
     </script>
 </body>
