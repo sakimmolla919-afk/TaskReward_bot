@@ -196,7 +196,7 @@
             padding: 10px;
             text-align: center;
             background: var(--card-bg);
-            border: 1px solid var(--border-color, #222);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 8px;
             color: var(--text-sub);
             font-size: 13px;
@@ -342,11 +342,11 @@
             </div>
             <div id="leaderboardList">
                 <div class="lb-item">
-                    <span>1st. amavatavan</span>
+                    <span>1st. User_8921</span>
                     <span style="color: var(--neon-green);">1,200 pts</span>
                 </div>
                 <div class="lb-item">
-                    <span>2nd. manhwangsila</span>
+                    <span>2nd. User_3412</span>
                     <span style="color: var(--neon-green);">420 pts</span>
                 </div>
             </div>
@@ -475,7 +475,7 @@
             document.getElementById('headerTitle').innerText = title;
         }
 
-        // Trigger Monetag Rewarded Ad
+        // Trigger Monetag Rewarded Ad with Fallback
         function triggerAd(videoNum) {
             if (typeof show_12234206 === 'function') {
                 show_12234206().then(() => {
@@ -484,10 +484,16 @@
                     updateUI();
                     alert(`Success! 10 Points added for Video #${videoNum}`);
                 }).catch(() => {
-                    alert('Ad interaction was cancelled. Points were not added.');
+                    points += 10;
+                    watched += 1;
+                    updateUI();
+                    alert(`Success! 10 Points added for Video #${videoNum}`);
                 });
             } else {
-                alert('Ad SDK is loading or blocked by AdBlocker. Please check connection.');
+                points += 10;
+                watched += 1;
+                updateUI();
+                alert(`Success! 10 Points added for Video #${videoNum}`);
             }
         }
 
