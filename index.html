@@ -189,6 +189,14 @@
             color: #fff;
         }
 
+        .claim-btn:disabled {
+            border-color: var(--text-sub);
+            color: var(--text-sub);
+            background: rgba(255, 255, 255, 0.05);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
         /* Leaderboard UI */
         .lb-tabs {
             display: flex;
@@ -605,21 +613,22 @@
         </div>
     </div>
 
-    <!-- Firebase SDK v10.8.0 -->
+    <!-- Firebase SDK v10.8.0 (Updated Config) -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
         const firebaseConfig = {
-            apiKey: "AIzaSyDa77K5bXMzjLz3YFQ3AxAQWiI_2Od67pY",
-            authDomain: "project-a81348b2-1e4d-4eb4-a6e.firebaseapp.com",
-            databaseURL: "https://project-a81348b2-1e4d-4eb4-a6e-default-rtdb.firebaseio.com",
-            projectId: "project-a81348b2-1e4d-4eb4-a6e",
-            storageBucket: "project-a81348b2-1e4d-4eb4-a6e.firebasestorage.app",
-            messagingSenderId: "778053852356",
-            appId: "1:778053852356:web:abc19f7a4c1351e9acbd91",
-            measurementId: "G-9SPK7JWJZC"
+          apiKey: "AIzaSyC9n24gOjKDNa1-G9BRcgcGHVimjcddpTM",
+          authDomain: "adstaskreward.firebaseapp.com",
+          databaseURL: "https://adstaskreward-default-rtdb.firebaseio.com",
+          projectId: "adstaskreward",
+          storageBucket: "adstaskreward.firebasestorage.app",
+          messagingSenderId: "496707721745",
+          appId: "1:496707721745:web:8d9cf0e50c8c63d9dbefb0",
+          measurementId: "G-Y2QB6G2W6K"
         };
 
         const app = initializeApp(firebaseConfig);
@@ -636,7 +645,7 @@
         };
     </script>
 
-    <!-- App Logic -->
+    <!-- App Logic with 30-Second Timer -->
     <script>
         let points = 0;
         let currentMethod = 'INR';
@@ -655,23 +664,38 @@
                         <div class="video-points">+10 Points</div>
                     </div>
                 </div>
-                <button class="claim-btn" onclick="triggerMonetagDirectAd(${i})">CLAIM - 10 Points</button>
+                <button class="claim-btn" id="btn-${i}" onclick="triggerMonetagDirectAd(${i})">CLAIM - 10 Points</button>
             `;
             videoContainer.appendChild(card);
         }
 
-        // Open Monetag Direct Link & Reward User
+        // Open Monetag Direct Link & Start 30s Timer
         function triggerMonetagDirectAd(videoNum) {
             window.open(MONETAG_DIRECT_LINK, '_blank');
             
-            points += 10;
-            updateUI();
-            if (window.syncPointsToFirebase) {
-                window.syncPointsToFirebase(points);
-            }
-            setTimeout(() => {
-                alert(`Success! +10 Points added for Video #${videoNum}`);
-            }, 600);
+            const btn = document.getElementById(`btn-${videoNum}`);
+            btn.disabled = true;
+            let timeLeft = 30;
+            btn.innerText = `Wait ${timeLeft}s...`;
+
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                if (timeLeft > 0) {
+                    btn.innerText = `Wait ${timeLeft}s...`;
+                } else {
+                    clearInterval(timerInterval);
+                    btn.disabled = false;
+                    btn.innerText = `CLAIM - 10 Points`;
+                    
+                    // Reward User after timer completes
+                    points += 10;
+                    updateUI();
+                    if (window.syncPointsToFirebase) {
+                        window.syncPointsToFirebase(points);
+                    }
+                    alert(`Success! +10 Points added for Video #${videoNum}`);
+                }
+            }, 1000);
         }
 
         function updateUI() {
